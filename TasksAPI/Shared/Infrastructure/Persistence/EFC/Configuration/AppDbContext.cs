@@ -26,6 +26,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<User>().Property(u => u.Username).IsRequired();
         builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+        builder.Entity<User>().Property(u => u.Role).HasConversion<string>();
 
         // builder.Entity<Product>().HasKey(u => u.ProductId);
         // builder.Entity<Product>().Property(u => u.ProductId).IsRequired().ValueGeneratedOnAdd();

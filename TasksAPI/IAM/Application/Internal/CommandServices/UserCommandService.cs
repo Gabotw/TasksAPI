@@ -1,6 +1,7 @@
 using TasksAPI.IAM.Application.Internal.OutboundServices;
 using TasksAPI.IAM.Domain.Model.Aggregates;
 using TasksAPI.IAM.Domain.Model.Commands;
+using TasksAPI.IAM.Domain.Model.ValueObjects;
 using TasksAPI.IAM.Domain.Repositories;
 using TasksAPI.IAM.Domain.Services;
 using TasksAPI.Shared.Domain.Repositories;
@@ -18,9 +19,19 @@ public class UserCommandService(
     {
         if (userRepository.ExistsByUsername(command.Username))
             throw new Exception($"Username {command.Username} is already taken");
-        
+    
         var hashedPassword = hashingService.HashPassword(command.Password);
-        var user = new User(command.Username, hashedPassword);
+  
+        // Validación de roles
+        if (command.Roles.Length == 0)
+            throw new Exception("Al menos un rol debe ser proporcionado");
+    
+        // Intentar parsear el rol y validar que exista
+        if (!Enum.TryParse<Role>(command.Roles[0], true, out var userRole))
+            throw new Exception($"Rol inválido: {command.Roles[0]}. Los roles válidos son: {string.Join(", ", Enum.GetNames(typeof(Role)))}");
+    
+        var user = new User(command.Username, hashedPassword).UpdateRole(userRole);
+    
         try
         {
             await userRepository.AddAsync(user);

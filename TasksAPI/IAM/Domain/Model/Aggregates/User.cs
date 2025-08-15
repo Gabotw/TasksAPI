@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using TasksAPI.IAM.Domain.Model.ValueObjects;
 
 namespace TasksAPI.IAM.Domain.Model.Aggregates;
 
@@ -11,7 +12,8 @@ public class User(string username, string passwordHash)
     public string Username { get; private set; } = username;
     
     [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
-    
+
+    public Role Role { get; private set; } = Role.EMPLOYEE;
     
     public User UpdateUsername(string username)
     {
@@ -24,5 +26,10 @@ public class User(string username, string passwordHash)
         PasswordHash = passwordHash;
         return this;
     }
-    
+
+    public User UpdateRole(Role role)
+    {
+        Role = role;
+        return this;
+    }
 }
