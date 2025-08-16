@@ -14,6 +14,11 @@ using TasksAPI.IAM.Infrastructure.Persistence.EFC.Repositories;
 using TasksAPI.IAM.Infrastructure.Pipeline.Middleware.Extensions;
 using TasksAPI.IAM.Infrastructure.Tokens.JWT.Configuration;
 using TasksAPI.IAM.Infrastructure.Tokens.JWT.Services;
+using TasksAPI.Management.Application.Internal.CommandServices;
+using TasksAPI.Management.Application.Internal.QueryServices;
+using TasksAPI.Management.Domain.Repositories;
+using TasksAPI.Management.Domain.Services;
+using TasksAPI.Management.Infrastructure.EFC.Repositories;
 using TasksAPI.Shared.Domain.Repositories;
 using TasksAPI.Shared.Infrastructure.Interfaces.ASP.Configuration;
 using TasksAPI.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -142,6 +147,10 @@ builder.Services.AddScoped<IUserCommandService, UserCommandService>();
 builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IHashingService, HashingService>();
+
+builder.Services.AddScoped<ITaskkRepository, TaskkRepository>();
+builder.Services.AddScoped<ITaskkCommandService, TaskkCommandService>();
+builder.Services.AddScoped<ITaskkQueryService, TaskkQueryService>();
 
 var app = builder.Build();
 // Verify Database Objects are created
