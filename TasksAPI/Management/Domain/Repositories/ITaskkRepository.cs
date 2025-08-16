@@ -7,4 +7,5 @@ public interface ITaskkRepository: IBaseRepository<Taskk>
 {
     Task<Taskk?> FindTaskkByTitleAsync(string title);
     Task<IEnumerable<Taskk>> FindByUserIdAsync(int userId);
+    Task<IEnumerable<Taskk>> FindByUserIdWithStoredProcedureAsync(int userId);
 }

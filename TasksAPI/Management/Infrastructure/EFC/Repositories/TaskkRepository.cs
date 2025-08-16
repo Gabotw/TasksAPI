@@ -19,4 +19,11 @@ public class TaskkRepository(AppDbContext context) : BaseRepository<Taskk>(conte
             .Where(t => t.UserId == userId)
             .AsEnumerable());
     }
+
+    public async Task<IEnumerable<Taskk>> FindByUserIdWithStoredProcedureAsync(int userId)
+    {
+        return await Context.Set<Taskk>()
+            .FromSqlRaw("EXEC GetTasksByUser @UserId = {0}", userId)
+            .ToListAsync();
+    }
 }
