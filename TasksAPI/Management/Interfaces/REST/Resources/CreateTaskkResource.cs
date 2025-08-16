@@ -1,3 +1,16 @@
-﻿namespace TasksAPI.Management.Interfaces.REST.Resources;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record CreateTaskkResource(string Title,string Description, bool IsCompleted=false, int UserId = 0);
+namespace TasksAPI.Management.Interfaces.REST.Resources;
+
+public record CreateTaskkResource(
+    [Required(ErrorMessage = "El título es obligatorio")]
+    [StringLength(100, MinimumLength = 3, ErrorMessage = "El título debe tener entre 3 y 100 caracteres")]
+    string Title,
+    
+    [StringLength(500, ErrorMessage = "La descripción no puede exceder los 500 caracteres")]
+    string Description,
+    
+    bool IsCompleted = false,
+    
+    [Range(0, int.MaxValue, ErrorMessage = "El ID del usuario debe ser un valor positivo o cero")]
+    int UserId = 0);

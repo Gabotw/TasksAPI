@@ -31,7 +31,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
          builder.Entity<Taskk>().HasKey(u => u.TaskkId);
          builder.Entity<Taskk>().Property(u => u.TaskkId).IsRequired().ValueGeneratedOnAdd();
-         builder.Entity<Taskk>().Property(p => p.Title).IsRequired().HasMaxLength(200);
+         builder.Entity<Taskk>().Property(p => p.Title).IsRequired().HasMaxLength(100);
          builder.Entity<Taskk>().Property(u => u.Description).IsRequired();
         
         // Apply SnakeCase Naming Convention
