@@ -22,11 +22,9 @@ public class UserCommandService(
     
         var hashedPassword = hashingService.HashPassword(command.Password);
   
-        // Validación de roles
         if (command.Roles.Length == 0)
             throw new Exception("Al menos un rol debe ser proporcionado");
     
-        // Intentar parsear el rol y validar que exista
         if (!Enum.TryParse<Role>(command.Roles[0], true, out var userRole))
             throw new Exception($"Rol inválido: {command.Roles[0]}. Los roles válidos son: {string.Join(", ", Enum.GetNames(typeof(Role)))}");
     

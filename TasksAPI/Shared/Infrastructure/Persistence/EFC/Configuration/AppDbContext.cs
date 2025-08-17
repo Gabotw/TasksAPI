@@ -11,17 +11,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
-        // Enable Audit Fields Interceptors
         builder.AddCreatedUpdatedInterceptor();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
-        // Place here your entities configuration
-        
-        // IAM Context
 
         builder.Entity<User>().HasKey(u => u.Id);
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
@@ -34,7 +29,6 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
          builder.Entity<Taskk>().Property(p => p.Title).IsRequired().HasMaxLength(100);
          builder.Entity<Taskk>().Property(u => u.Description).IsRequired();
         
-        // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
     }
 }

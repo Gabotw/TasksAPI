@@ -27,7 +27,6 @@ using TasksAPI.Shared.Infrastructure.Persistence.EFC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers(options => 
     options.Conventions.Add(new KebabCaseRouteNamingConvention())
@@ -35,10 +34,8 @@ builder.Services.AddControllers(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
 );
 
-// Add Database Connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Configure Database Context and Logging Levels
 
 builder.Services.AddDbContext<AppDbContext>(
     options =>
@@ -55,10 +52,8 @@ builder.Services.AddDbContext<AppDbContext>(
                     .EnableDetailedErrors();
     });
 
-// Configure Lowercase URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     c =>
@@ -106,7 +101,6 @@ builder.Services.AddSwaggerGen(
         });
     });
 
-// Add CORS Policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllPolicy",
@@ -115,7 +109,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-// Configurar autenticación JWT
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -136,12 +129,8 @@ builder.Services.AddAuthentication(config =>
     };
 });
 
-// Configure Dependency Injection
-
-// Shared Bounded Context Injection Configuration
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// IAM Bounded Context Injection Configuration
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
@@ -154,7 +143,6 @@ builder.Services.AddScoped<ITaskkCommandService, TaskkCommandService>();
 builder.Services.AddScoped<ITaskkQueryService, TaskkQueryService>();
 
 var app = builder.Build();
-// Verify Database Objects are created
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -162,18 +150,12 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
 }
 app.InitializeDatabase();
-// Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}*/
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("AllowAllPolicy");
 
-// Add authorization middleware to pipeline
 app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();

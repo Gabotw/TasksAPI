@@ -26,16 +26,14 @@ public class TaskkCommandService : ITaskkCommandService
 
     public async Task<Taskk?> handle(CreateTaskkCommand command)
     {
-        // Validar que el usuario exista y sea EMPLOYEE
         if (command.UserId != 0)
         {
             var user = await _userQueryService.Handle(new GetUserByIdQuery(command.UserId));
             if (user == null)
-                return null; // Usuario no existe
+                return null; 
 
-            // Corregir la comparación usando el enum Role
             if (user.Role != Role.EMPLOYEE)
-                return null; // Solo empleados pueden ser asignados a tareas
+                return null;
         }
 
         var taskk = new Taskk(command);
@@ -54,16 +52,14 @@ public class TaskkCommandService : ITaskkCommandService
 
     public async Task<Taskk?> handle(UpdateTaskkCommand command)
     {
-        // Validar que el usuario exista y sea EMPLOYEE
         if (command.UserId != 0)
         {
             var user = await _userQueryService.Handle(new GetUserByIdQuery(command.UserId));
             if (user == null)
-                return null; // Usuario no existe
+                return null; 
 
-            // Corregir la comparación usando el enum Role
             if (user.Role != Role.EMPLOYEE)
-                return null; // Solo empleados pueden ser asignados a tareas
+                return null;
         }
 
         var taskk = await _taskkRepository.FindByIdAsync(command.TaskId);
