@@ -18,7 +18,7 @@ public class TaskkController(ITaskkCommandService taskkCommandService, ITaskkQue
 : ControllerBase
 {
     [HttpGet]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN, EMPLOYEE")]
     public async Task<IActionResult> GetAllTaskks()
     {
         var getAllTaskksQuery = new GetAllTaskksQuery();
