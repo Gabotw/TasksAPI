@@ -16,6 +16,8 @@ public partial class Taskk
     
     public bool IsCompleted { get; set; }
     
+    public bool IsDeleted { get; set; }
+    
     [Range(0, int.MaxValue)]
     public int UserId { get; set; }
 
@@ -25,6 +27,7 @@ public partial class Taskk
         Description = description;
         IsCompleted = isCompleted;
         UserId = userId;
+        IsDeleted = false;
     }
     public Taskk(CreateTaskkCommand command)
     {
@@ -32,6 +35,7 @@ public partial class Taskk
         Description = command.Description;
         IsCompleted = command.IsCompleted;
         UserId = command.UserId;
+        IsDeleted = false;
     }
 
     public void Update(string title, string description, bool isCompleted, int userId = 0)
@@ -40,5 +44,10 @@ public partial class Taskk
         Description = description;
         IsCompleted = isCompleted;
         UserId = userId;
+    }
+
+    public void Delete(DeleteTaskkCommand command)
+    {
+        IsDeleted = true;
     }
 }

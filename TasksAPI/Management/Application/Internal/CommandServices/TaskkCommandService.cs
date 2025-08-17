@@ -79,7 +79,9 @@ public class TaskkCommandService : ITaskkCommandService
     {
         var taskk = await _taskkRepository.FindByIdAsync(command.TaskId);
         if(taskk is null) return false;
-        _taskkRepository.Remove(taskk);
+        
+        taskk.Delete(command);
+        _taskkRepository.Update(taskk);
         await _unitOfWork.CompleteAsync();
         return true;
     }

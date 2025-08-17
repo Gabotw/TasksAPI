@@ -14,11 +14,11 @@ public class TaskkQueryService(ITaskkRepository taskkRepository): ITaskkQuerySer
 
     public async Task<IEnumerable<Taskk>> handle(GetAllTaskksQuery query)
     {
-        return await taskkRepository.ListAsync();
+        return await taskkRepository.FindAllTaskksIsNotDeletedAsync();
     }
 
     public async Task<IEnumerable<Taskk>> handle(GetAllTaskksByUserIdQuery query)
     {
-        return await taskkRepository.FindByUserIdAsync(query.UserId);
+        return await taskkRepository.FindByUserIdWithStoredProcedureAsync(query.UserId);
     }
 }

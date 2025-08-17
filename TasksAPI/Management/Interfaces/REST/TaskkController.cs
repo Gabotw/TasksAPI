@@ -40,17 +40,16 @@ public class TaskkController(ITaskkCommandService taskkCommandService, ITaskkQue
     
     [HttpGet("user/{userId:int}")]
     [Authorize(Roles = "ADMIN, EMPLOYEE")]
-    public async Task<IActionResult> GetAllTaskksByUserId(int userId)
+    public async Task<IActionResult> GetTasksByUser(int userId)
     {
         if (User.IsInRole("EMPLOYEE"))
         {
             var userIdClaim = User.FindFirst(ClaimTypes.Sid)?.Value;
             if (userIdClaim == null || !int.TryParse(userIdClaim, out int currentUserId) || currentUserId != userId)
             {
-                return Forbid(); 
+                return Forbid();
             }
         }
-
         var getAllTaskksByUserIdQuery = new GetAllTaskksByUserIdQuery(userId);
         var taskks = await taskkQueryService.handle(getAllTaskksByUserIdQuery);
         var taskkResources = taskks.Select(TaskkResourceFromEntityAssembler.ToResourceFromEntity);

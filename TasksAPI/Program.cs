@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TasksAPI.Database;
 using TasksAPI.IAM.Application.Internal.CommandServices;
 using TasksAPI.IAM.Application.Internal.OutboundServices;
 using TasksAPI.IAM.Application.Internal.QueryServices;
@@ -160,7 +161,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<AppDbContext>();
     context.Database.EnsureCreated();
 }
-
+app.InitializeDatabase();
 // Configure the HTTP request pipeline.
 /*if (app.Environment.IsDevelopment())
 {
